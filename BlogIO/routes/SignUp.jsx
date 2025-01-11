@@ -2,7 +2,7 @@ function SignUp() {
     return (
         <main className="container">
             <nav>
-                <ul><li><a href="index.html">BlogIO</a></li></ul>
+                <ul><li><a href="/">BlogIO</a></li></ul>
             </nav>
             <article className="grid">
                 <div>
