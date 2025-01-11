@@ -6,10 +6,10 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Homepage from '../routes/Homepage'
 import LogIn from '../routes/LogIn'
 import SignUp from '../routes/SignUp'
-import amplifyConfiguration from '../utils/amplifyConfiguration'
+import config from './utils/amplifyConfiguration'
 import { Amplify } from 'aws-amplify'
 
-Amplify.configure(amplifyConfiguration)
+Amplify.configure(config)
 
 const router = createBrowserRouter([
   {
