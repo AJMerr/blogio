@@ -67,9 +67,10 @@ function SignUp() {
                                 value={formData.password}
                                 onChange={handleChange}
                                 placeholder="password" 
-                                pattern="." 
+                                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
                                 required 
                             />
+                            <small>Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character (@$!%*?&)</small>
                         </label>
                         <input type="submit" value="Sign Up" />
                         <small>Email me at austinm9506@gmail.com if you would like your data purged if you test this application.</small>
