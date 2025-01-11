@@ -1,4 +1,47 @@
+import { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+
 function LogIn() {
+    const [formData, setFormData] = useState({
+        email: '',
+        password: ''
+    });
+    const [error, setError] = useState('');
+    const navigate = useNavigate();
+
+    const handleChange = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setError('');
+        
+        try {
+            const response = await fetch('/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            });
+
+            if (!response.ok) {
+                throw new Error('Login failed');
+            }
+
+            const data = await response.json();
+            // Store the token or user data in localStorage/context
+            localStorage.setItem('token', data.token);
+            navigate('/'); // Redirect to home page after successful login
+        } catch (err) {
+            setError('Invalid email or password');
+        }
+    };
+
     return (
         <main className="container">
             <nav>
@@ -6,14 +49,29 @@ function LogIn() {
             </nav>
             <article className="grid">
                 <div>
-                    <form>
+                    <form onSubmit={handleSubmit}>
+                        {error && <div className="error">{error}</div>}
                         <label>
                             Email
-                            <input type="email" placeholder="example@email.com" required />
+                            <input 
+                                type="email" 
+                                name="email"
+                                value={formData.email}
+                                onChange={handleChange}
+                                placeholder="example@email.com" 
+                                required 
+                            />
                         </label>
                         <label>
                             Password
-                            <input type="password" placeholder="password" pattern="." required />
+                            <input 
+                                type="password" 
+                                name="password"
+                                value={formData.password}
+                                onChange={handleChange}
+                                placeholder="password" 
+                                required 
+                            />
                         </label>
                         <input type="submit" value="Login" />
                         <small>Email me at austinm9506@gmail.com if you would like your data purged if you test this application.</small>
@@ -21,11 +79,11 @@ function LogIn() {
                 </div>
                 <div>
                     <h1>Not Registered?</h1>
-                    <p1>Sign up </p1><a href="signup.html">here!</a>
+                    <p>Sign up <Link to="/signup">here!</Link></p>
                 </div>
             </article>
         </main>
-    )
+    );
 }
 
 export default LogIn;
