@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { Auth } from 'aws-amplify';
 
 function LogIn() {
     const [formData, setFormData] = useState({
@@ -21,24 +22,12 @@ function LogIn() {
         setError('');
         
         try {
-            const response = await fetch('/api/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData)
-            });
-
-            if (!response.ok) {
-                throw new Error('Login failed');
-            }
-
-            const data = await response.json();
-            // Store the token or user data in localStorage/context
-            localStorage.setItem('token', data.token);
+            const user = await Auth.signIn(formData.email, formData.password);
+            console.log('Successfully logged in:', user);
             navigate('/'); // Redirect to home page after successful login
         } catch (err) {
-            setError('Invalid email or password');
+            console.error('Login error:', err);
+            setError(err.message || 'Invalid email or password');
         }
     };
 
