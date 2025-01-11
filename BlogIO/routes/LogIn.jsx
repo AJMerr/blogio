@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Auth } from 'aws-amplify';
+import { signIn } from 'aws-amplify/auth';
 
 function LogIn() {
     const [formData, setFormData] = useState({
@@ -22,9 +22,12 @@ function LogIn() {
         setError('');
         
         try {
-            const user = await Auth.signIn(formData.email, formData.password);
+            const user = await signIn({
+                username: formData.email,
+                password: formData.password
+            });
             console.log('Successfully logged in:', user);
-            navigate('/'); // Redirect to home page after successful login
+            navigate('/');
         } catch (err) {
             console.error('Login error:', err);
             setError(err.message || 'Invalid email or password');
