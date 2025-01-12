@@ -24,6 +24,10 @@ const router = createBrowserRouter([
     path: '/signup',
     element: <SignUp />,
   },
+  {
+    path: '/generateBlog',
+    element: <BlogGen />,
+  },
 ])
 
 createRoot(document.getElementById('root')).render(
