@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { signIn } from 'aws-amplify/auth';
+import { AuthContext } from '../src/main';
 
 function LogIn() {
     const [formData, setFormData] = useState({
@@ -9,6 +10,7 @@ function LogIn() {
     });
     const [error, setError] = useState('');
     const navigate = useNavigate();
+    const { setIsAuthenticated } = useContext(AuthContext);
 
     const handleChange = (e) => {
         setFormData({
@@ -27,7 +29,8 @@ function LogIn() {
                 password: formData.password
             });
             console.log('Successfully logged in:', user);
-            navigate('/');
+            setIsAuthenticated(true);
+            navigate('/generateBlog');
         } catch (err) {
             console.error('Login error:', err);
             setError(err.message || 'Invalid email or password');

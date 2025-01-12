@@ -1,5 +1,8 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import axios from 'axios';
+import { AuthContext } from '../src/main';
+import { signOut } from 'aws-amplify/auth';
+import { useNavigate } from 'react-router-dom';
 
 export default function BlogGen() {
   const [activities, setActivities] = useState('');
@@ -7,6 +10,8 @@ export default function BlogGen() {
   const [blogPost, setBlogPost] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const { setIsAuthenticated } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,8 +36,24 @@ export default function BlogGen() {
     }
   };
 
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      setIsAuthenticated(false);
+      navigate('/');
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
+  };
+
   return (
     <main className="container">
+      <nav>
+        <ul><li><a href="/">BlogIO</a></li></ul>
+        <ul>
+          <li><a href="#" onClick={handleSignOut}>Sign Out</a></li>
+        </ul>
+      </nav>
       <h1 style={{ textAlign: 'center' }}>AI Blog Generator</h1>
       
       <form onSubmit={handleSubmit}>
