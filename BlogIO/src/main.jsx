@@ -1,4 +1,4 @@
-import { StrictMode } from 'react'
+import React, { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import '@picocss/pico'
@@ -15,7 +15,7 @@ import ProtectedRoute from '../components/ProtectedRoute'
 
 Amplify.configure(config)
 
-// Add auth context
+// Add auth context 
 export const AuthContext = React.createContext(null)
 
 function App() {
